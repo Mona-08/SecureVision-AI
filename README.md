@@ -7,7 +7,7 @@
 
 ### 🚀 Features
 - **Logo Detection:** Identifies official sports broadcasters.
-- **Integrity Analysis:** Uses Gemini 2.0 to verify sports news claims.
+- **Integrity Analysis:** Uses gemini-2.5-flash to verify sports news claims.
 - **Multi-Media Support:** Scans text, websites, and YouTube links.
 
 ### 🛠️ Tech Stack
