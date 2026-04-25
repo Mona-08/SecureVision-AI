@@ -1,0 +1,15 @@
+# Python files to ignore
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# Firebase files to ignore
+.firebase/
+firebase-debug.log
+ui-debug.log
+
+# OS files
+.DS_Store
+Thumbs.db
