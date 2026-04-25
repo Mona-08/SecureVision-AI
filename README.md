@@ -2,8 +2,8 @@
 **Sports Integrity & Media Verification Scanner**
 
 ### 🔗 Links
-- **Live Demo:** [Paste your Firebase URL here]
-- **Backend Space:** [Paste your Hugging Face Space URL here]
+- **Live Demo:**  https://vision-ai-e3887.web.app
+- **Backend Space:** https://mona-08-securevision-ai.hf.space
 
 ### 🚀 Features
 - **Logo Detection:** Identifies official sports broadcasters.
