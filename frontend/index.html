@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureVision AI | Sports Integrity Scanner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Open+Sans:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            color: #202124;
+        }
+
+        h1,
+        h2,
+        h3,
+        .google-sans {
+            font-family: 'Open Sans', 'Roboto', sans-serif;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .google-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px 0 rgba(60, 64, 67, 0.3), 0 4px 8px 3px rgba(60, 64, 67, 0.15);
+            border: 1px solid #dadce0;
+        }
+
+        .google-input {
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            transition: border 0.2s, box-shadow 0.2s;
+        }
+
+        .google-input:focus {
+            border-color: #1a73e8;
+            box-shadow: inset 0 0 0 1px #1a73e8;
+            outline: none;
+        }
+
+        .google-btn {
+            background-color: #1a73e8;
+            color: white;
+            border-radius: 24px;
+            font-weight: 500;
+            letter-spacing: 0.25px;
+            transition: background-color 0.2s, box-shadow 0.2s;
+        }
+
+        .google-btn:hover {
+            background-color: #1b66c9;
+            box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+        }
+
+        .google-btn:disabled {
+            background-color: #f1f3f4;
+            color: #3c4043;
+            box-shadow: none;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .verdict-badge-success {
+            background-color: #e6f4ea;
+            color: #137333;
+            border: 1px solid #ceead6;
+        }
+
+        .verdict-badge-error {
+            background-color: #fce8e6;
+            color: #c5221f;
+            border: 1px solid #fad2cf;
+        }
+
+        .top-bar {
+            border-bottom: 1px solid #dadce0;
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col">
+    <header class="top-bar py-3 px-6 flex items-center justify-between sticky top-0 z-10">
+        <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-blue-600 text-3xl">verified_user</span>
+            <h1 class="text-xl google-sans font-medium text-gray-800 tracking-tight">SecureVision AI</h1>
+        </div>
+        <div class="text-sm text-gray-500 font-medium hidden sm:block">
+            Google Developer Contest 2026
+        </div>
+    </header>
+
+    <main class="flex-grow p-6 md:p-12 flex flex-col items-center">
+        <div class="w-full max-w-3xl">
+            <div class="mb-10 text-center">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 mb-4">
+                    <span class="material-symbols-outlined text-blue-600 text-4xl">policy</span>
+                </div>
+                <h2 class="text-4xl google-sans mb-4 text-gray-800 tracking-tight">Sports Integrity Scanner</h2>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Analyze sports news text, websites, images, or video
+                    URLs to instantly detect official entities and verify content integrity using Gemini AI.</p>
+            </div>
+
+            <div class="google-card p-6 md:p-8 mb-8">
+                <label class="block mb-3 text-sm font-medium text-gray-700 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm">text_snippet</span>
+                    Analyze Sports News Text, Website, Image, or Video URL
+                </label>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <input type="text" id="urlInput" placeholder="Paste a URL or raw sports news text here..."
+                        class="google-input flex-1 p-3 text-base text-gray-800 placeholder-gray-400">
+                    <button onclick="analyzeImage()" id="btn"
+                        class="google-btn px-8 py-3 flex items-center justify-center gap-2 h-[50px]">
+                        <span class="material-symbols-outlined text-lg" id="btnIcon">search</span>
+                        <span id="btnText">Scan Content</span>
+                    </button>
+                </div>
+                <p class="text-xs text-gray-500 mt-3 flex items-center gap-1">
+                    <span class="material-symbols-outlined" style="font-size: 14px;">info</span>
+                    Paste a direct URL to media or simply type out a sports news claim for fact-checking.
+                </p>
+            </div>
+
+            <div id="resultCard" class="hidden google-card p-0 overflow-hidden">
+                <div id="loader" class="hidden p-12 text-center">
+                    <div class="inline-block relative w-12 h-12 mb-4">
+                        <svg class="animate-spin text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                            </circle>
+                            <path class="opacity-75" fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="google-sans text-lg text-gray-800 font-medium">Gemini is analyzing...</h3>
+                    <p class="text-gray-500 mt-2 text-sm">Processing content and verifying integrity signatures.</p>
+                </div>
+
+                <div id="content" class="hidden">
+                    <div class="border-b border-gray-200 p-6 flex items-center gap-3 bg-gray-50">
+                        <span class="material-symbols-outlined text-gray-600">assessment</span>
+                        <h2 class="text-xl google-sans font-medium text-gray-800">Analysis Report</h2>
+                    </div>
+
+                    <div class="p-6 md:p-8 space-y-6">
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                            <div class="text-sm font-medium text-gray-500 w-32 uppercase tracking-wider text-xs">
+                                Integrity Verdict</div>
+                            <div class="flex-1">
+                                <span id="verdict"
+                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium">
+                                    <span class="material-symbols-outlined" id="verdictIcon"
+                                        style="font-size: 18px;"></span>
+                                    <span id="verdictText"></span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-4">
+                            <div class="text-sm font-medium text-gray-500 w-32 mt-1 uppercase tracking-wider text-xs">
+                                Detected Entities</div>
+                            <div class="flex-1">
+                                <div id="logos"
+                                    class="text-gray-800 font-medium bg-white p-3 rounded border border-gray-200 inline-block">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-4">
+                            <div class="text-sm font-medium text-gray-500 w-32 mt-1 uppercase tracking-wider text-xs">AI
+                                Reasoning</div>
+                            <div class="flex-1">
+                                <div id="reasoning"
+                                    class="text-gray-700 text-sm leading-relaxed bg-gray-50 p-5 rounded-lg border border-gray-100 shadow-inner">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer
+        class="py-6 text-center text-sm text-gray-500 border-t border-gray-200 bg-white flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined" style="font-size: 16px;">auto_awesome</span>
+        Powered by Google Gemini
+    </footer>
+
+    <script>
+        // Your live backend URL
+        const HF_URL = 'https://mona-08-securevision-ai.hf.space/analyze';
+
+        // 🚀 AUTO-WAKE: This ping starts waking up Hugging Face as soon as the page loads
+        window.addEventListener('load', () => {
+            console.log("Initiating backend wake-up...");
+            fetch(HF_URL.replace('/analyze', '/'), { mode: 'no-cors' })
+                .catch(() => console.log("Backend warming up..."));
+        });
+
+        async function analyzeImage() {
+            const urlValue = document.getElementById('urlInput').value;
+            const btn = document.getElementById('btn');
+            const btnText = document.getElementById('btnText');
+            const btnIcon = document.getElementById('btnIcon');
+            const resultCard = document.getElementById('resultCard');
+            const loader = document.getElementById('loader');
+            const content = document.getElementById('content');
+
+            if (!urlValue) {
+                alert("Please paste a URL or text content!");
+                return;
+            }
+
+            // UI Feedback - Let the user know it might take a second on the first try
+            btn.disabled = true;
+            btnText.innerText = "Waking up Gemini...";
+            btnIcon.innerText = "hourglass_empty";
+
+            resultCard.classList.remove('hidden');
+            loader.classList.remove('hidden');
+            content.classList.add('hidden');
+
+            try {
+                // Check if running locally or on Firebase
+                const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+                const apiUrl = isLocal ? 'http://127.0.0.1:7860/analyze' : HF_URL;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url: urlValue })
+                });
+
+                if (!response.ok) {
+                    throw new Error("Backend is still starting up. Please wait 10 seconds and try again!");
+                }
+
+                const data = await response.json();
+
+                if (data.error) {
+                    alert("Analysis Error: " + data.error);
+                    resultCard.classList.add('hidden');
+                    return;
+                }
+
+                // Update UI with Results
+                const verdictEl = document.getElementById('verdict');
+                const verdictIcon = document.getElementById('verdictIcon');
+
+                document.getElementById('verdictText').innerText = data.integrity_verdict;
+
+                if (data.is_official) {
+                    verdictEl.className = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium verdict-badge-success";
+                    verdictIcon.innerText = "check_circle";
+                } else {
+                    verdictEl.className = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium verdict-badge-error";
+                    verdictIcon.innerText = "warning";
+                }
+
+                document.getElementById('logos').innerText = data.detected_logos && data.detected_logos.length > 0 ? data.detected_logos.join(", ") : "None detected";
+                document.getElementById('reasoning').innerText = data.reasoning || "No detailed reasoning provided.";
+
+                loader.classList.add('hidden');
+                content.classList.remove('hidden');
+            } catch (err) {
+                console.error(err);
+                alert(err.message || "Error connecting to backend.");
+                resultCard.classList.add('hidden');
+            } finally {
+                btn.disabled = false;
+                btnText.innerText = "Scan Content";
+                btnIcon.innerText = "search";
+            }
+        }
+    </script>
+</body>
+
+</html>
